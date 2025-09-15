@@ -2,7 +2,11 @@ import re
 import requests
 from typing import List
 from .player import Player
-filepath = "markdown_snippet.md"
+from pathlib import Path
+
+
+""" filepath = Path(__file__).parent
+filepath = filepath / 'markdown_snippet.md """
 
 '''
     Reads the markdown file line and returns the player object
@@ -51,6 +55,30 @@ def clean_markdown_line(player_array: List[str]) -> Player:
     # Finally, create player object
     footballer = Player(player_name,player_position,country,flag,dob)
     return footballer
+
+buffer = ""
+""" with open(filepath,'r',encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            buffer += line
+            if (buffer.startswith('|') and buffer.endswith('|')):
+                # Valid line
+                buffer = buffer.strip()
+                player_details_array = buffer.split('|')
+                player = clean_markdown_line(player_details_array)
+
+                # Check if ID already exists in the database
+
+                # ID exists- only update the many-to-many table
+                # ID does not exist- create new player and create new row in the player_club_table
+
+
+                # End it with resetting the buffer
+                buffer = ""
+            # Line does not yet contain all the info for the player details """
+
 
     
 

@@ -20,4 +20,6 @@ class Player:
         combination = self.fullname+self.position+self.nationality+self.dob
         encoded = uuid.uuid3(uuid.NAMESPACE_DNS,combination)
         return encoded
+    def __str__(self):
+       return self.fullname+" "+self.position+" "+self.nationality
     
