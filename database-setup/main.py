@@ -1,4 +1,5 @@
 from src.markdown_extractor import clean_markdown_line
+
 def main():
     print("Hello from database-setup!")
     # Before beginning the extraction process. Obtain all ID and add them to a set. Reduces the number of DB queries
