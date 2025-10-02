@@ -42,12 +42,12 @@ def get_db_connection_and_cursor():
         conn = psycopg2.connect(**db_params)
         cursor = conn.cursor()
         print("Connection successful.")
-        sql_query = f"SELECT * FROM football_team"
+        """ sql_query = f"SELECT * FROM football_team"
         print("Attempting to execute query")
         cursor.execute(sql_query)
-        records = cursor.fetchall()
+        records = cursor.fetchall() """
         
-        return records, cursor
+        return conn, cursor
     except OperationalError as e:
         print(f"\nDatabase Connection Error: {e}")
         print("Please check your credentials, database status, and network connection.")
@@ -64,3 +64,4 @@ def get_db_connection_and_cursor():
         if conn:
             conn.close()
             print("Database connection closed.")
+        
