@@ -13,9 +13,10 @@ sql_query = f"SELECT * FROM {table_name}"
 cursor.execute(sql_query)
 records = cursor.fetchall()
 
-print(f'Row in the {table_name} table are as follows: -')
-for row in records:
-    print(row)
+print(f"ID's in the {table_name} table are as follows: -")
+result = list(map(lambda team_data: team_data[0], records))
+for id in result:
+    print(id)
 
 
 connection.close()
