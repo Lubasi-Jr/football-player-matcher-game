@@ -37,8 +37,8 @@ def main():
    
 
     # Construct the path to the markdown file
-    filepath = getfilepath("arsenal")
-    team_id = 3
+    filepath = getfilepath("tottenham_hotspur")
+    team_id = 6
     # filepath = "markdown_snippet.md"
     buffer = ""
     with open(filepath,'r',encoding="utf-8") as f:
