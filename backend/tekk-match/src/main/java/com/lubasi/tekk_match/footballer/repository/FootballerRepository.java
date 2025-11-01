@@ -1,7 +1,7 @@
-package com.lubasi.tekk_match.footballer;
+package com.lubasi.tekk_match.footballer.repository;
 
+import com.lubasi.tekk_match.footballer.models.Footballer;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

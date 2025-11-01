@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface TeamRepository extends JpaRepository<FootballTeam,Long> {
 
-    List<FootballTeam> findByName(String teamName);
+    List<FootballTeam> findByTeamName(String teamName);
     List<FootballTeam> findByLeague(String leagueName);
 
     @Query(

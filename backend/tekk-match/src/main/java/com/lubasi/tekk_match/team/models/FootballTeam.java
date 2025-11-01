@@ -1,12 +1,9 @@
 package com.lubasi.tekk_match.team.models;
 
-import com.lubasi.tekk_match.footballer.Footballer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Data
@@ -22,11 +19,13 @@ public class FootballTeam {
     private String teamName;
     private String league;
 
-    @ManyToMany( cascade = CascadeType.REMOVE)
-    @JoinTable(
-            name = "played_for",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id")
-    )
-    private List<Footballer> footballers;
+    // For the specific use case of the game, you do not need to fetch the team as well as all players that play for that team
+
+//    @ManyToMany( cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "played_for",
+//            joinColumns = @JoinColumn(name = "team_id"),
+//            inverseJoinColumns = @JoinColumn(name = "player_id")
+//    )
+//    private List<Footballer> footballers;
 }

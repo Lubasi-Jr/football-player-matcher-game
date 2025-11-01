@@ -1,13 +1,10 @@
-package com.lubasi.tekk_match.footballer;
+package com.lubasi.tekk_match.footballer.models;
 
-import com.lubasi.tekk_match.team.models.FootballTeam;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +27,6 @@ public class Footballer {
     private String flag;
     private String dob;
 
-    @ManyToMany(mappedBy = "footballers")
-    private List<FootballTeam> teamsPlayedFor;
+//    @ManyToMany(mappedBy = "footballers")
+//    private List<FootballTeam> teamsPlayedFor;
 }
