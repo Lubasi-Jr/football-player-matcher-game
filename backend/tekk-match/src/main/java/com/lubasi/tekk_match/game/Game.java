@@ -21,35 +21,14 @@ public class Game {
     private ArrayList<TeamSelection> teamSelections;
     private boolean showClubs;
 
-    public Game(Player player1){
+    public Game(Player player1, String newGameId){
         this.player1 = player1;
         this.footballerSelection = new ArrayList<>();
         this.teamSelections = new ArrayList<>();
         this.showClubs = false;
         this.status = GameStatus.NEW;
-        this.gameId = UUID.randomUUID().toString();
+        this.gameId = newGameId;
     }
 
-    public void addTeamSelection(TeamSelection selection){
-        // Should update the future game message attribute
-        this.teamSelections.add(selection);
-        if(this.teamSelections.size() > 1){
-            // Check if teams are the same
-            boolean sameTeams = this.teamSelections.get(0)
-                    .getTeamSelected()
-                    .getFootballTeamId()
-                    .equals(this.teamSelections.get(1).getTeamSelected().getFootballTeamId());
-            if(sameTeams){
-                // Update broadcast message to say that the teams are equal
-                // Empty the List to allow for new team entries
-                this.teamSelections.clear();
-            }
-            // All teams are select and are different. Ready to reveal them
-            this.showClubs = true;
-            // New broadcast message: The teams revealed are as follows. Select your players quickly!!
-        }
-        // This is the first team selection made. Message should be "Waiting for all players to select their teams"
-
-    }
 
 }
