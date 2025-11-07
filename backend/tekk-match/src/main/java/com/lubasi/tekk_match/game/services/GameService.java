@@ -2,6 +2,7 @@ package com.lubasi.tekk_match.game.services;
 
 import com.lubasi.tekk_match.game.Game;
 import com.lubasi.tekk_match.game.enums.GameStatus;
+import com.lubasi.tekk_match.game.exceptions.EmptyMatchmakingQueue;
 import com.lubasi.tekk_match.game.exceptions.GameNotFoundException;
 import com.lubasi.tekk_match.game.exceptions.InvalidGameException;
 import com.lubasi.tekk_match.game.models.Player;
@@ -13,12 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.UUID;
 
 @Service
 public class GameService {
     private final GameStorage gameStorage;
     private final TeamRepository teamRepository;
+    private final Queue<Player> matchmaking = new LinkedList<>();
 
     @Autowired
     public GameService(GameStorage storage, TeamRepository teamRepository){
@@ -46,6 +50,22 @@ public class GameService {
         return gameToJoin;
     }
 
+    public synchronized Game joinRandomGame(Player player2) throws EmptyMatchmakingQueue{
+        matchmaking.add(player2);
+        if(matchmaking.size() >= 2){
+            Player playerOne = matchmaking.poll();
+            Player playerTwo = matchmaking.poll();
+
+            String newGameID = UUID.randomUUID().toString();
+            Game newGame = new Game(playerOne,newGameID);
+            newGame.setPlayer2(playerTwo);
+            newGame.setStatus(GameStatus.IN_PROGRESS);
+            gameStorage.addGame(newGame);
+            return newGame; // Make sure to send it to the relevant subscribers
+        }
+        throw  new EmptyMatchmakingQueue("No available players at the moment");
+    }
+
     public Game addTeamSelection(Long teamToAddID, String gameID, Player player){
         Game game = gameStorage.getGames().get(gameID);
         ArrayList<TeamSelection> currentTeamSelections = game.getTeamSelections();
@@ -66,7 +86,7 @@ public class GameService {
             currentTeamSelections.add(newTeamSelection);
 
             game.setTeamSelections(currentTeamSelections);
-            gameStorage.addGame(game);
+            gameStorage.addGame(game); // REMEMBER TO UPDATE WITH BROADCASTING MESSAGE
 
             return game;
         }
@@ -82,7 +102,7 @@ public class GameService {
         return game;
     }
 
-    
+
 
 
 }
