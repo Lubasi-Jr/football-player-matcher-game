@@ -1,10 +1,12 @@
 package com.lubasi.tekk_match.game.services;
 
+import com.lubasi.tekk_match.footballer.models.Footballer;
 import com.lubasi.tekk_match.game.Game;
 import com.lubasi.tekk_match.game.enums.GameStatus;
 import com.lubasi.tekk_match.game.exceptions.EmptyMatchmakingQueue;
 import com.lubasi.tekk_match.game.exceptions.GameNotFoundException;
 import com.lubasi.tekk_match.game.exceptions.InvalidGameException;
+import com.lubasi.tekk_match.game.models.FootballerSelection;
 import com.lubasi.tekk_match.game.models.Player;
 import com.lubasi.tekk_match.game.models.TeamSelection;
 import com.lubasi.tekk_match.game.storage.GameStorage;
@@ -100,6 +102,27 @@ public class GameService {
         gameStorage.addGame(game);
 
         return game;
+    }
+
+    public Game addPlayerSelection(Footballer baller, String gameID, Player player){
+        Game game = gameStorage.getGames().get(gameID);
+        // Create a player selection
+        FootballerSelection selection = new FootballerSelection(player,baller);
+        // Check if current player selections includes something
+        ArrayList<FootballerSelection> currentSelections = game.getFootballerSelection();
+        if(!currentSelections.isEmpty()){
+            // If it is not empty then this selection has lost
+            return game;
+        }
+        // Else, player has won with this selection since it the first
+        currentSelections.add(selection);
+        game.setWinner(player);
+        game.setFootballerSelection(currentSelections);
+        game.setStatus(GameStatus.FINISHED);
+        // Update the broadcasting message
+        gameStorage.addGame(game);
+        return game;
+
     }
 
 

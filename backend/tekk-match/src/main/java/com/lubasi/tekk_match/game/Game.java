@@ -17,6 +17,7 @@ public class Game {
     private GameStatus status;
     private Player player1;
     private Player player2;
+    private Player winner;
     private ArrayList<FootballerSelection> footballerSelection;
     private ArrayList<TeamSelection> teamSelections;
     private boolean showClubs;
