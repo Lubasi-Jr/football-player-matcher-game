@@ -29,6 +29,7 @@ public class Game {
         this.showClubs = false;
         this.status = GameStatus.NEW;
         this.gameId = newGameId;
+        this.winner = null;
     }
 
 

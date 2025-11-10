@@ -8,7 +8,9 @@ import com.lubasi.tekk_match.game.exceptions.GameNotFoundException;
 import com.lubasi.tekk_match.game.exceptions.InvalidGameException;
 import com.lubasi.tekk_match.game.models.FootballerSelection;
 import com.lubasi.tekk_match.game.models.Player;
+import com.lubasi.tekk_match.game.models.Replay;
 import com.lubasi.tekk_match.game.models.TeamSelection;
+import com.lubasi.tekk_match.game.storage.GameReplay;
 import com.lubasi.tekk_match.game.storage.GameStorage;
 import com.lubasi.tekk_match.team.models.FootballTeam;
 import com.lubasi.tekk_match.team.repository.TeamRepository;
@@ -24,12 +26,14 @@ import java.util.UUID;
 public class GameService {
     private final GameStorage gameStorage;
     private final TeamRepository teamRepository;
+    private final GameReplay gameReplay;
     private final Queue<Player> matchmaking = new LinkedList<>();
 
     @Autowired
-    public GameService(GameStorage storage, TeamRepository teamRepository){
+    public GameService(GameStorage storage, TeamRepository teamRepository, GameReplay gameReplay){
         this.gameStorage = storage;
         this.teamRepository = teamRepository;
+        this.gameReplay = gameReplay;
     }
 
     public Game createNewGame(Player player1){
@@ -37,6 +41,10 @@ public class GameService {
         String newGameID = UUID.randomUUID().toString();
         Game newGame = new Game(player1,newGameID);
         gameStorage.addGame(newGame);
+
+        // Set up the replays for the game
+        gameReplay.addNewReplay(newGameID);
+
         return newGame;
     }
 
@@ -63,6 +71,10 @@ public class GameService {
             newGame.setPlayer2(playerTwo);
             newGame.setStatus(GameStatus.IN_PROGRESS);
             gameStorage.addGame(newGame);
+
+            // Set up the replays for the game
+            gameReplay.addNewReplay(newGameID);
+
             return newGame; // Make sure to send it to the relevant subscribers
         }
         throw  new EmptyMatchmakingQueue("No available players at the moment");
@@ -125,14 +137,31 @@ public class GameService {
 
     }
 
-    // Method for replaying the next round. Needs a bean that stores replay objects.
-    // This is the last method. Start working on the controllers now
+    public Game replayRequest(String gameID, String playerID){
+        Replay replay = gameReplay.addNewRequest(playerID, gameID);
+        Game game = gameStorage.getGames().get(gameID);
+
+        if(replay.getReplayRequests().size() == 1){
+            // Duplicate request OR The player is the first player to request
+            return game; // Update the broadcasting message with "Waiting for all players to request next round"
+        }
+        // Since the size is 2, restart the game and return it to both players
+        game.setStatus(GameStatus.IN_PROGRESS);
+        game.setTeamSelections(new ArrayList<>());
+        game.setFootballerSelection(new ArrayList<>());
+        game.setWinner(null);
+        game.setShowClubs(false);
+        game.setShowClubs(false);
+        return game;
+    }
+
 
     public Game leaveGame(String gameID){
         // Game Abandoned, so in frontend the player who did not abandon the  gets navigated back to home
         Game abandonedGame = gameStorage.getGames().get(gameID);
         abandonedGame.setStatus(GameStatus.ABANDONED);
         gameStorage.getGames().remove(abandonedGame.getGameId());
+        gameReplay.getGameReplays().remove(abandonedGame.getGameId());
         return abandonedGame;
     }
 
