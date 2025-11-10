@@ -118,11 +118,22 @@ public class GameService {
         currentSelections.add(selection);
         game.setWinner(player);
         game.setFootballerSelection(currentSelections);
-        game.setStatus(GameStatus.FINISHED);
+        game.setStatus(GameStatus.FINISHED); // If the round is finished, show the replay button
         // Update the broadcasting message
         gameStorage.addGame(game);
         return game;
 
+    }
+
+    // Method for replaying the next round. Needs a bean that stores replay objects.
+    // This is the last method. Start working on the controllers now
+
+    public Game leaveGame(String gameID){
+        // Game Abandoned, so in frontend the player who did not abandon the  gets navigated back to home
+        Game abandonedGame = gameStorage.getGames().get(gameID);
+        abandonedGame.setStatus(GameStatus.ABANDONED);
+        gameStorage.getGames().remove(abandonedGame.getGameId());
+        return abandonedGame;
     }
 
 
