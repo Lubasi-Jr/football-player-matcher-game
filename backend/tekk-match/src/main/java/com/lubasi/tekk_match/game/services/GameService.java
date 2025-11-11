@@ -98,6 +98,7 @@ public class GameService {
             FootballTeam team = teamRepository.findById(teamToAddID).orElseThrow();
             TeamSelection newTeamSelection = new TeamSelection(player,team);
             currentTeamSelections.add(newTeamSelection);
+            game.setShowClubs(true);
 
             game.setTeamSelections(currentTeamSelections);
             gameStorage.addGame(game); // REMEMBER TO UPDATE WITH BROADCASTING MESSAGE
@@ -116,8 +117,47 @@ public class GameService {
         return game;
     }
 
+    public boolean isFootballerValid(Game game, Footballer footballer){
+        if(game.getTeamSelections() == null || game.getTeamSelections().size() != 2){
+            return false;
+        }
+
+        UUID ballersID = footballer.getFootballerId();
+        Long teamID1 = game.getTeamSelections().get(0).getTeamSelected().getFootballTeamId();
+        Long teamID2 = game.getTeamSelections().get(1).getTeamSelected().getFootballTeamId();
+
+        boolean playedForTeam1 = teamRepository.footballerHasPlayedForTeam(ballersID,teamID1);
+        boolean playedForTeam2 = teamRepository.footballerHasPlayedForTeam(ballersID,teamID2);
+
+        return playedForTeam1 && playedForTeam2;
+    }
+
     public Game addPlayerSelection(Footballer baller, String gameID, Player player){
         Game game = gameStorage.getGames().get(gameID);
+
+        // 1. Check if game is already finished (i.e., someone else was faster)
+        if (game.getStatus().equals(GameStatus.FINISHED) ||
+                (game.getFootballerSelection() != null && !game.getFootballerSelection().isEmpty())) {
+
+            // The game is already over. This player lost the race.
+            // Just return the game in its finished state. The controller will
+            // broadcast this, and the client will see someone else won.
+            return game;
+        }
+
+        // 2. NEW: Validate the footballer selection
+        if (!isFootballerValid(game, baller)) {
+            // Invalid selection! The footballer didn't play for both teams.
+            // The game continues. Return the game in its current (unchanged) state.
+            // The player can try again.
+
+            // You can update the broadcasting message to say "Player did not player for both [Team] and [Team]
+            return game;
+        }
+
+        // 3. If we're here, the selection is VALID and this player is the FIRST.
+        // This player WINS!
+
         // Create a player selection
         FootballerSelection selection = new FootballerSelection(player,baller);
         // Check if current player selections includes something
