@@ -15,6 +15,7 @@ import java.util.UUID;
 public class Game {
     private String gameId;
     private GameStatus status;
+    private String broadcastingMessage;
     private Player player1;
     private Player player2;
     private Player winner;
@@ -30,6 +31,7 @@ public class Game {
         this.status = GameStatus.NEW;
         this.gameId = newGameId;
         this.winner = null;
+        this.broadcastingMessage = "";
     }
 
 

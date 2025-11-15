@@ -56,6 +56,7 @@ public class GameService {
         if(!gameToJoin.getStatus().equals(GameStatus.NEW)) throw new InvalidGameException("Sorry, you can't join this game. It is full");
         gameToJoin.setPlayer2(player2);
         gameToJoin.setStatus(GameStatus.IN_PROGRESS);
+        gameToJoin.setBroadcastingMessage("Please select the teams you wish to use");
         gameStorage.addGame(gameToJoin); // Update the details of the game that currently exists
         return gameToJoin;
     }
@@ -91,6 +92,8 @@ public class GameService {
                     .getFootballTeamId();
             if(pickedTeamID.equals(teamToAddID)){
                 // Update the broadcasting message and return the game unchanged
+                game.setTeamSelections(new ArrayList<>());
+                game.setBroadcastingMessage("The teams selected are the same, please re-pick your teams once more");
                 gameStorage.addGame(game); // REMEMBER TO UPDATE WITH BROADCASTING MESSAGE
                 return game;
             }
@@ -101,6 +104,7 @@ public class GameService {
             game.setShowClubs(true);
 
             game.setTeamSelections(currentTeamSelections);
+            game.setBroadcastingMessage("The teams to match up are shown below. Quickly search for a valid footballer!!");
             gameStorage.addGame(game); // REMEMBER TO UPDATE WITH BROADCASTING MESSAGE
 
             return game;
@@ -110,7 +114,6 @@ public class GameService {
         FootballTeam team = teamRepository.findById(teamToAddID).orElseThrow();
         TeamSelection newTeamSelection = new TeamSelection(player,team);
         currentTeamSelections.add(newTeamSelection);
-
         game.setTeamSelections(currentTeamSelections);
         gameStorage.addGame(game);
 
@@ -190,7 +193,6 @@ public class GameService {
         game.setTeamSelections(new ArrayList<>());
         game.setFootballerSelection(new ArrayList<>());
         game.setWinner(null);
-        game.setShowClubs(false);
         game.setShowClubs(false);
         return game;
     }
