@@ -52,7 +52,7 @@ public class GamePlayController {
      */
     @MessageMapping("game/replay")
     public void replayGame(@Payload ReplayPayload payload){
-        Game updatedGame = gameService.replayRequest(payload.getGameId(), payload.getPlayerId());
+        Game updatedGame = gameService.replayRequest(payload.getGameId(), payload.getPlayer());
         broadcastGameUpdate(updatedGame);
     }
 

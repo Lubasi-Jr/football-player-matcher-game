@@ -155,6 +155,9 @@ public class GameService {
             // The player can try again.
 
             // You can update the broadcasting message to say "Player did not player for both [Team] and [Team]
+            String ballerName = baller.getFootballerName();
+            String message = ballerName+" did not play for both of these teams.";
+            game.setBroadcastingMessage(message);
             return game;
         }
 
@@ -175,17 +178,23 @@ public class GameService {
         game.setFootballerSelection(currentSelections);
         game.setStatus(GameStatus.FINISHED); // If the round is finished, show the replay button
         // Update the broadcasting message
+        String playerUsername = player.getUsername();
+        String ballerName = baller.getFootballerName();
+        String message = playerUsername+" "+"won this round. Their footballer selection was "+ballerName;
+        game.setBroadcastingMessage(message);
         gameStorage.addGame(game);
         return game;
 
     }
 
-    public Game replayRequest(String gameID, String playerID){
-        Replay replay = gameReplay.addNewRequest(playerID, gameID);
+    public Game replayRequest(String gameID, Player playerRequesting){
+        Replay replay = gameReplay.addNewRequest(playerRequesting.getPlayerId(), gameID);
         Game game = gameStorage.getGames().get(gameID);
 
         if(replay.getReplayRequests().size() == 1){
             // Duplicate request OR The player is the first player to request
+            String message = playerRequesting.getUsername() + " requested to play the next round";
+            game.setBroadcastingMessage(message);
             return game; // Update the broadcasting message with "Waiting for all players to request next round"
         }
         // Since the size is 2, restart the game and return it to both players
@@ -202,6 +211,7 @@ public class GameService {
         // Game Abandoned, so in frontend the player who did not abandon the  gets navigated back to home
         Game abandonedGame = gameStorage.getGames().get(gameID);
         abandonedGame.setStatus(GameStatus.ABANDONED);
+        abandonedGame.setBroadcastingMessage("This game has been abandoned");
         gameStorage.getGames().remove(abandonedGame.getGameId());
         gameReplay.getGameReplays().remove(abandonedGame.getGameId());
         return abandonedGame;

@@ -1,5 +1,6 @@
 package com.lubasi.tekk_match.payloads;
 
+import com.lubasi.tekk_match.game.models.Player;
 import lombok.Data;
 
 /**
@@ -8,5 +9,5 @@ import lombok.Data;
 @Data
 public class ReplayPayload {
     private String gameId;
-    private String playerId;
+    private Player player;
 }
