@@ -15,6 +15,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // access link would be : ('http://localhost:8080/ms');
         registry.addEndpoint("/tekk").setAllowedOriginPatterns("*").withSockJS();
 
+        // NEW: Endpoint for raw WebSocket clients (like Postman/dedicated tools)
+        registry.addEndpoint("/postman").setAllowedOriginPatterns("*");
+
     }
 
     @Override

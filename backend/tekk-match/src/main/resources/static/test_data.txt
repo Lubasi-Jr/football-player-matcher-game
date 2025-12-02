@@ -1,0 +1,39 @@
+Valid Player Id= 1282fe7d-57a8-3561-b392-f066f7c00b3f
+Invalid Player id= 49b0069b-8546-3eaa-b0a0-17bb587397c4
+
+gameId: 02cc79d6-31e8-44ed-9b27-0a671a72f89e
+
+Game Lobby logic works:- here is the response
+
+{
+    "player1": {
+        "playerId": "12345",
+        "username": "Lubasi"
+    },
+    "gameId": "02cc79d6-31e8-44ed-9b27-0a671a72f89e",
+    "status": "IN_PROGRESS",
+    "broadcastingMessage": "Please select the teams you wish to use",
+    "player2": {
+        "playerId": "6789",
+        "username": "Milupi"
+    },
+    "winner": null,
+    "footballerSelection": [],
+    "teamSelections": [],
+    "showClubs": false
+}
+
+{
+    "player1": {
+        "playerId": "169",
+        "username": "Lubasi"
+    },
+    "gameId": "a23098d8-ce08-4d98-b90c-974f2059597c",
+    "status": "NEW",
+    "broadcastingMessage": "",
+    "player2": null,
+    "winner": null,
+    "footballerSelection": [],
+    "teamSelections": [],
+    "showClubs": false
+}

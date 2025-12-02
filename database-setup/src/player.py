@@ -17,8 +17,7 @@ class Player:
         self.flag_url = flag_url
         self.dob = dob
     def createUUID(self) -> UUID:
-        combination = self.fullname+self.position+self.nationality+self.dob
-        encoded = uuid.uuid3(uuid.NAMESPACE_DNS,combination)
+        encoded = uuid.uuid4() 
         self.player_id = encoded
         return encoded
     def __str__(self):
