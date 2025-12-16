@@ -1,5 +1,8 @@
 package com.lubasi.tekk_match.game.models;
 
+import lombok.Builder;
+
+@Builder
 public class Player {
     private String playerId;
     private String username;
