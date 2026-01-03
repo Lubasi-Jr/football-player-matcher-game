@@ -1,0 +1,28 @@
+name: Spring Boot Backend for Tekk Match
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend/tekk-match
+    steps:
+      - name: Clone the Repo
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend/tekk-match
+          dockerfile: ./backend/tekk-match/Dockerfile
+          push: false
+          tags: lambeth101/tekk-match-ci-cd:latest
