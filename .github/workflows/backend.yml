@@ -19,10 +19,12 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
+      - name: Run tests with Maven
+        run: mvn test
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
           context: ./backend/tekk-match
-          dockerfile: ./backend/tekk-match/Dockerfile
+          file: ./backend/tekk-match/Dockerfile
           push: false
           tags: lambeth101/tekk-match-ci-cd:latest

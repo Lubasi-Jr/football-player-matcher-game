@@ -42,7 +42,7 @@ public class FootballerControllerTests {
     public void FootballerController_GetPlayersFromQuery_Returns_PaginatedListOfPlayers() throws Exception{
         // ARRANGE
         // Create mock list of footballers
-        Footballer footballer1 = Footballer.builder().footballerId(UUID.fromString("adabai-128198-ndfjsajio"))
+        Footballer footballer1 = Footballer.builder().footballerId(UUID.randomUUID())
                 .footballerName("Van Persie")
                 .dob("12/07/2002")
                 .flag("RANDOM-FLAG-URL")
