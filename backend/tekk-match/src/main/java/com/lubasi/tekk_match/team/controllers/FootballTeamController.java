@@ -21,6 +21,7 @@ public class FootballTeamController {
         this.footballTeamService = footballTeamService;
     }
 
+    // Use either this route or the "/" to test the api
     @GetMapping
     public List<FootballTeam> getAllTeams(){
         return footballTeamService.getAllTeams();
