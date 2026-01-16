@@ -12,7 +12,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 
-        // access link would be : ('http://localhost:8080/ms');
+        // access link would be : ('http://localhost:8080/tekk');
         registry.addEndpoint("/tekk").setAllowedOriginPatterns("*").withSockJS();
 
         // NEW: Endpoint for raw WebSocket clients (like Postman/dedicated tools)
