@@ -1,0 +1,90 @@
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 128;
+  --background-end-rgb: 0, 0, 128;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+/* Custom scrollbar for search results */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Foggy background overlay */
+.foggy-overlay {
+  position: relative;
+}
+
+.foggy-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 128, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1;
+}
+
+.foggy-overlay > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Team card styles */
+.team-card {
+  @apply transition-all duration-300 cursor-pointer;
+}
+
+.team-card:hover {
+  @apply scale-105 shadow-lg;
+}
+
+.team-card.selected {
+  @apply ring-4 ring-accent-red scale-105;
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-accent-red hover:bg-accent-burgundy text-white font-body font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply bg-accent-brown hover:bg-accent-burgundy text-white font-body font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* Input styles */
+.input-field {
+  @apply w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 font-body focus:outline-none focus:ring-2 focus:ring-accent-red focus:border-transparent transition-all duration-300;
+}
+
+/* Heading styles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-eb-garamond), serif;
+}
