@@ -1,4 +1,4 @@
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --foreground-rgb: 255, 255, 255;
@@ -53,7 +53,7 @@ body {
 }
 
 /* Team card styles */
-.team-card {
+/* .team-card {
   @apply transition-all duration-300 cursor-pointer;
 }
 
@@ -64,20 +64,16 @@ body {
 .team-card.selected {
   @apply ring-4 ring-accent-red scale-105;
 }
-
+ */
 /* Button styles */
-.btn-primary {
-  @apply bg-accent-red hover:bg-accent-burgundy text-white font-body font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
-}
-
-.btn-secondary {
-  @apply bg-accent-brown hover:bg-accent-burgundy text-white font-body font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
-}
+/* .btn-primary {
+  @apply text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+} */
 
 /* Input styles */
-.input-field {
-  @apply w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 font-body focus:outline-none focus:ring-2 focus:ring-accent-red focus:border-transparent transition-all duration-300;
-}
+/* .input-field {
+  @apply w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 font-body focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300;
+} */
 
 /* Heading styles */
 h1,
