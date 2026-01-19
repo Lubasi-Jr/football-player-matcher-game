@@ -1,5 +1,8 @@
 import { Metadata } from "next";
 import { EB_Garamond, Montserrat } from "next/font/google";
+import { PlayerProvider } from "@/context/PlayerProvider";
+import { GameProvider } from "@/context/GameContext";
+import BackgroundImage from "@/features/home/components/BackgroundImage";
 import "./globals.css";
 
 const garamond = EB_Garamond({
@@ -27,7 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} ${garamond.variable} font-sans`}>
-        {children}
+        <PlayerProvider>
+          <GameProvider>
+            <BackgroundImage>{children}</BackgroundImage>
+          </GameProvider>
+        </PlayerProvider>
       </body>
     </html>
   );

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,10 +18,13 @@ import org.springframework.web.bind.annotation.*;
 public class GameLobbyController {
 
     private final GameService gameService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public GameLobbyController(GameService gameService){
+    public GameLobbyController(GameService gameService, SimpMessagingTemplate messagingTemplate){
         this.gameService = gameService;
+        this.messagingTemplate = messagingTemplate;
+
     }
 
     /**
@@ -43,12 +47,20 @@ public class GameLobbyController {
     public ResponseEntity<Game> joinGame(@PathVariable String gameId, @RequestBody Player player2){
         try{
             Game gameToJoin = gameService.joinGame(player2,gameId);
+            // Send a message to Player 1 that triggers them to route to the game room
+            notifyGameStarted(gameToJoin);
             return ResponseEntity.ok(gameToJoin);
         } catch (GameNotFoundException gameNotFoundException) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (InvalidGameException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    private void notifyGameStarted(Game game) {
+        String destination = "/gameroom/" + game.getGameId();
+        // This sends the updated game object (now containing Player 2) to Player 1
+        messagingTemplate.convertAndSend(destination, game);
     }
 
     /**

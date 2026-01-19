@@ -1,22 +1,40 @@
 "use client";
+import { useParams } from "next/navigation";
+import React from "react";
 import { usePlayer } from "@/context/PlayerProvider";
-import Image from "next/image";
+import { useRef } from "react";
 import { useRouter } from "next/router";
-import { ReactHTMLElement, useRef } from "react";
+import { useEffect } from "react";
+import { useGame } from "@/context/GameContext";
 
-export default function Home() {
+function JoinGame() {
   const { createGamePlayer } = usePlayer();
   const usernameRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  const handleCreateGame = () => {
+  const { initializeConnection, game } = useGame();
+  const params = useParams<{ gameId: string }>();
+
+  // First useEffect is to establish a connection with the websocket (Data synchronisation)
+  useEffect(() => {
+    initializeConnection(params.gameId);
+  }, [params.gameId]);
+
+  // 2nd useEffect is for when the game receives an update that both players are available
+  useEffect(() => {
+    if (game?.player1.playerId && game?.player2.playerId) {
+      router.push(`/game/${game?.gameId}`);
+    }
+  }, [game, router]);
+
+  const handleJoinGame = () => {
     console.log(usernameRef.current?.value);
 
     // Check if username is set
     if (!usernameRef.current?.value) return;
     // Create New Game Player
     createGamePlayer(usernameRef.current.value);
-    // Route to the lobby
+    // Retrieve the player object and the gameId in order to call join game- this will trigger the useEffect to run because game will update
   };
   return (
     <div className="relative z-10 min-h-screen w-full">
@@ -29,20 +47,10 @@ export default function Home() {
             for both. Showcase your football knowledge under pressure in this
             rapid-fire, head-to-head trivia battle!
           </p>
-          <input
-            type="text"
-            placeholder="Enter your username"
-            ref={usernameRef}
-            className="border-2 bg-white text-black text-center px-2 py-2 focus:ring-black rounded-md"
-          />
-          <button
-            onClick={handleCreateGame}
-            className="font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer"
-          >
-            Create Game
-          </button>
         </div>
       </section>
     </div>
   );
 }
+
+export default JoinGame;
