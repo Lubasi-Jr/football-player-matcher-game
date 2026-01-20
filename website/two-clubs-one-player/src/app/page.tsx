@@ -1,22 +1,23 @@
 "use client";
 import { usePlayer } from "@/context/PlayerProvider";
+import { useCreateGame } from "@/features/home/hooks";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { ReactHTMLElement, useRef } from "react";
 
 export default function Home() {
-  const { createGamePlayer } = usePlayer();
-  const usernameRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { createGamePlayer, player } = usePlayer();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const mutation = useCreateGame();
 
   const handleCreateGame = () => {
-    console.log(usernameRef.current?.value);
-
     // Check if username is set
     if (!usernameRef.current?.value) return;
     // Create New Game Player
     createGamePlayer(usernameRef.current.value);
-    // Route to the lobby
+    // Route to the lobby- can only route once we have received a game object
+    mutation.mutate(player);
   };
   return (
     <div className="relative z-10 min-h-screen w-full">

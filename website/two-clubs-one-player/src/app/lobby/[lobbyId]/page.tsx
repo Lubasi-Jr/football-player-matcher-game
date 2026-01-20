@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useGame } from "@/context/GameContext";
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function LobbyPage() {
   const { initializeConnection, game } = useGame();

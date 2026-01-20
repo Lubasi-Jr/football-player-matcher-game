@@ -35,6 +35,8 @@ public class GameLobbyController {
     @PostMapping("/create")
     public ResponseEntity<Game> createNewGame(@RequestBody Player player){
         Game newGame = gameService.createNewGame(player);
+        System.out.println("New Game created and stored in storage");
+        System.out.println(newGame);
         return ResponseEntity.ok(newGame);
     }
 
@@ -48,6 +50,8 @@ public class GameLobbyController {
         try{
             Game gameToJoin = gameService.joinGame(player2,gameId);
             // Send a message to Player 1 that triggers them to route to the game room
+            System.out.println("Game to send to player 1 and 2 below");
+            System.out.println(gameToJoin);
             notifyGameStarted(gameToJoin);
             return ResponseEntity.ok(gameToJoin);
         } catch (GameNotFoundException gameNotFoundException) {

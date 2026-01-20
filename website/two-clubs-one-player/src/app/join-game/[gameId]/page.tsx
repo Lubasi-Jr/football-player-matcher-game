@@ -3,38 +3,39 @@ import { useParams } from "next/navigation";
 import React from "react";
 import { usePlayer } from "@/context/PlayerProvider";
 import { useRef } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useGame } from "@/context/GameContext";
+import { mutationInput } from "@/features/join-game/hooks";
+import { useJoinGame } from "@/features/join-game/hooks";
 
 function JoinGame() {
-  const { createGamePlayer } = usePlayer();
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
-
-  const { initializeConnection, game } = useGame();
+  const { createGamePlayer, player } = usePlayer();
+  const { initializeConnection } = useGame();
   const params = useParams<{ gameId: string }>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const mutation = useJoinGame();
 
-  // First useEffect is to establish a connection with the websocket (Data synchronisation)
   useEffect(() => {
+    // Establish a websocket connection for this specific game
     initializeConnection(params.gameId);
   }, [params.gameId]);
 
-  // 2nd useEffect is for when the game receives an update that both players are available
-  useEffect(() => {
-    if (game?.player1.playerId && game?.player2.playerId) {
-      router.push(`/game/${game?.gameId}`);
-    }
-  }, [game, router]);
-
   const handleJoinGame = () => {
-    console.log(usernameRef.current?.value);
-
     // Check if username is set
     if (!usernameRef.current?.value) return;
     // Create New Game Player
     createGamePlayer(usernameRef.current.value);
-    // Retrieve the player object and the gameId in order to call join game- this will trigger the useEffect to run because game will update
+    const hardCodedPlayer2 = {
+      username: usernameRef.current.value,
+      playerId: "329438749238",
+    };
+    // Route to the lobby- can only route once we have received a game object
+    const input: mutationInput = {
+      gameId: params.gameId,
+      player2: hardCodedPlayer2,
+    };
+    mutation.mutate(input);
   };
   return (
     <div className="relative z-10 min-h-screen w-full">
@@ -47,6 +48,18 @@ function JoinGame() {
             for both. Showcase your football knowledge under pressure in this
             rapid-fire, head-to-head trivia battle!
           </p>
+          <input
+            type="text"
+            placeholder="Enter your username"
+            ref={usernameRef}
+            className="border-2 bg-white text-black text-center px-2 py-2 focus:ring-black rounded-md"
+          />
+          <button
+            onClick={handleJoinGame}
+            className="font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer"
+          >
+            Join Game
+          </button>
         </div>
       </section>
     </div>

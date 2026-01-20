@@ -8,7 +8,7 @@ import React, {
   ReactNode,
 } from "react";
 
-type Player = {
+export type Player = {
   playerId: string | null;
   username: string | null;
 };

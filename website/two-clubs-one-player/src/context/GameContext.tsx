@@ -10,9 +10,10 @@ import React, {
 } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { EMPTY_GAME, Game } from "@/types";
 
 interface GameContextType {
-  game: any; // Replace 'any' with your Game interface
+  game: Game | null; // Replace 'any' with your Game interface
   isConnected: boolean;
   sendAction: (destination: string, payload: any) => void;
   initializeConnection: (gameId: string) => void;
@@ -21,7 +22,7 @@ interface GameContextType {
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
-  const [game, setGame] = useState<any>(null);
+  const [game, setGame] = useState<Game | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const stompClient = useRef<Client | null>(null);
 
@@ -47,7 +48,8 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
       client.subscribe(`/gameroom/${gameId}`, (message) => {
         if (message.body) {
           const updatedGame = JSON.parse(message.body);
-          setGame(updatedGame); // This updates the UI globally
+          console.log(`Message received: ${updatedGame}`);
+          setGame((prev) => ({ ...prev, ...updatedGame })); // This updates the UI globally
         }
       });
     };
@@ -63,7 +65,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const sendAction = (destination: string, payload: any) => {
     if (stompClient.current && stompClient.current.connected) {
       stompClient.current.publish({
-        destination: `/app/game${destination}`,
+        destination: `/app/game/${destination}`,
         body: JSON.stringify(payload),
       });
     } else {

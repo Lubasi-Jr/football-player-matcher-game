@@ -25,6 +25,7 @@ public class Game {
 
     public Game(Player player1, String newGameId){
         this.player1 = player1;
+        this.player2 = null;
         this.footballerSelection = new ArrayList<>();
         this.teamSelections = new ArrayList<>();
         this.showClubs = false;
