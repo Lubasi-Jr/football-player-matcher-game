@@ -6,8 +6,18 @@ import { useGame } from "@/context/GameContext";
 import { useWebSocket } from "@/context/WebSocketContext";
 
 function GameRoom() {
+  // HOOKS
   const { game } = useGame();
   const { sendAction } = useWebSocket();
+
+  // EFFECTS
+  /* Effect to determine the game status and hence render accordingly with the helper function. Depends on the game object */
+
+  // HELPERS
+
+  // EVENT HANDLERS
+
+  // EARLY RETURNS
 
   if (!game)
     return (
@@ -18,12 +28,15 @@ function GameRoom() {
               <h1 className="text-4xl font-bold text-white">
                 2 Clubs 1 Player
               </h1>
-              <p className="text-white">Waiting for Game to load</p>
+              <p className="text-white">Waiting for Game to load...</p>
             </div>
           </section>
         </div>
       </>
     );
+
+  // RENDER LOGIC
+
   return (
     <div className="relative z-10 min-h-screen w-full">
       <section className="w-full h-screen px-6 flex items-center justify-center">

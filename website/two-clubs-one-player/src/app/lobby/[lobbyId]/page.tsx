@@ -7,11 +7,13 @@ import { useRouter } from "next/navigation";
 import { useGame } from "@/context/GameContext";
 
 function LobbyPage() {
-  const { initializeConnection } = useWebSocket();
+  // HOOKS - Cutsom then Library
   const { game } = useGame();
+  const { initializeConnection } = useWebSocket();
   const params = useParams<{ lobbyId: string }>();
   const router = useRouter();
 
+  // EFFECTS
   useEffect(() => {
     // Establish a websocket connection for this specific game
     initializeConnection(params.lobbyId);
@@ -23,6 +25,14 @@ function LobbyPage() {
       router.push(`/game/${game?.gameId}`);
     }
   }, [game, router]);
+
+  // HELPERS- n/a
+
+  // EVENT HANDLERS- n/a
+
+  // EARLY RETURNS- n/a
+
+  // RENDER LOGIC- n/a
   return (
     <div className="relative z-10 min-h-screen w-full">
       <section className="w-full h-screen px-6 flex items-center justify-center">

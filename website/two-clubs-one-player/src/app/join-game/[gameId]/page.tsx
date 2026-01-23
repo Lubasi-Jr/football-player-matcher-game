@@ -8,35 +8,56 @@ import { useEffect } from "react";
 import { useWebSocket } from "@/context/WebSocketContext";
 import { mutationInput } from "@/features/join-game/hooks";
 import { useJoinGame } from "@/features/join-game/hooks";
+import { ClipLoader } from "react-spinners";
 
 function JoinGame() {
-  const { createGamePlayer, player } = usePlayer();
+  // HOOKS
+  const { createGamePlayer } = usePlayer();
   const { initializeConnection } = useWebSocket();
-  const params = useParams<{ gameId: string }>();
-  const usernameRef = useRef<HTMLInputElement>(null);
   const mutation = useJoinGame();
 
+  const params = useParams<{ gameId: string }>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+
+  // EFFECTS
   useEffect(() => {
     // Establish a websocket connection for this specific game
     initializeConnection(params.gameId);
   }, [params.gameId]);
 
+  // HELPER FUNCTIONS- n/a
+
+  // EVENT HANDLERS
   const handleJoinGame = () => {
     // Check if username is set
     if (!usernameRef.current?.value) return;
     // Create New Game Player
-    createGamePlayer(usernameRef.current.value);
-    const hardCodedPlayer2 = {
-      username: usernameRef.current.value,
-      playerId: "329438749238",
-    };
+    const player2 = createGamePlayer(usernameRef.current.value);
+
     // Route to the lobby- can only route once we have received a game object
     const input: mutationInput = {
       gameId: params.gameId,
-      player2: hardCodedPlayer2,
+      player2: player2,
     };
     mutation.mutate(input);
   };
+
+  // EARLY RETURNS- n/a
+
+  // RENDER LOGIC
+  const isLoading = mutation.isPending;
+  const buttonName = isLoading ? (
+    <ClipLoader
+      color="#000000"
+      loading={true}
+      size={16}
+      aria-label="Loading Spinner"
+      data-testid="loader"
+    />
+  ) : (
+    "Join Game"
+  );
+
   return (
     <div className="relative z-10 min-h-screen w-full">
       <section className="w-full h-screen px-6 flex items-center justify-center">
@@ -58,7 +79,7 @@ function JoinGame() {
             onClick={handleJoinGame}
             className="font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer"
           >
-            Join Game
+            {buttonName}
           </button>
         </div>
       </section>

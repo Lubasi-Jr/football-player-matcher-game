@@ -1,17 +1,21 @@
 "use client";
 import { usePlayer } from "@/context/PlayerProvider";
 import { useCreateGame } from "@/features/home/hooks";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { ReactHTMLElement, useRef } from "react";
+import { ClipLoader } from "react-spinners";
+import { useRef } from "react";
 import { Player } from "@/context/PlayerProvider";
 
 export default function Home() {
-  const router = useRouter();
-  const { createGamePlayer, player } = usePlayer();
-  const usernameRef = useRef<HTMLInputElement>(null);
+  // HOOKS - Custom then Imported
+  const { createGamePlayer } = usePlayer();
   const mutation = useCreateGame();
+  const usernameRef = useRef<HTMLInputElement>(null);
 
+  // EFFECTS- N/A
+
+  // HELPERS- N/A
+
+  // EVENT HANDLERS
   const handleCreateGame = () => {
     // Check if username is set
     if (!usernameRef.current?.value) return;
@@ -20,6 +24,21 @@ export default function Home() {
     // Route to the lobby- can only route once we have received a game object
     mutation.mutate(player1);
   };
+
+  // EARLY RETURNS- N/A
+
+  // RENDER LOGIC e.g disabled buttons
+  const buttonName = mutation.isPending ? (
+    <ClipLoader
+      color="#000000"
+      loading={true}
+      size={16}
+      aria-label="Loading Spinner"
+      data-testid="loader"
+    />
+  ) : (
+    "Create Game"
+  );
   return (
     <div className="relative z-10 min-h-screen w-full">
       <section className="w-full h-screen px-6 flex items-center justify-center">
@@ -38,10 +57,11 @@ export default function Home() {
             className="border-2 bg-white text-black text-center px-2 py-2 focus:ring-black rounded-md"
           />
           <button
+            disabled={mutation.isPending}
             onClick={handleCreateGame}
-            className="font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer"
+            className="font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer min-w-[140]"
           >
-            Create Game
+            {buttonName}
           </button>
         </div>
       </section>
