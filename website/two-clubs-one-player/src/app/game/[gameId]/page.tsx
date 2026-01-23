@@ -7,11 +7,18 @@ import { useWebSocket } from "@/context/WebSocketContext";
 
 function GameRoom() {
   // HOOKS
-  const { game } = useGame();
-  const { sendAction } = useWebSocket();
+  const { game, gameId } = useGame();
+  const { sendAction, initializeConnection, isConnected } = useWebSocket();
+  const params = useParams<{ gameId: string }>();
 
   // EFFECTS
-  /* Effect to determine the game status and hence render accordingly with the helper function. Depends on the game object */
+  /* Controls the window refresh. Refreshing the window loses connection therefore we need to reconnect and sync the game again */
+  useEffect(() => {
+    const idToUse = params.gameId || gameId;
+    if (idToUse && !isConnected) {
+      initializeConnection(idToUse);
+    }
+  }, [gameId, params.gameId, isConnected]);
 
   // HELPERS
 
@@ -36,6 +43,8 @@ function GameRoom() {
     );
 
   // RENDER LOGIC
+  /* Determine the game status and hence render accordingly with the helper function. Depends on the game broadcasting message */
+  /* Use Memo is used to save up on computation every time the DOM re-renders cause of the small UI updates */
 
   return (
     <div className="relative z-10 min-h-screen w-full">

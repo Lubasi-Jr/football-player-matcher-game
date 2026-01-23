@@ -8,7 +8,7 @@ const searchForPlayers =
 const abandoned = "This game has been abandoned";
 
 // Logic to determine the state
-const getGameState = (message: string): number => {
+const getGameStateNumber = (message: string): number => {
   if (!message || message === "") return 1;
   if (message === selectTeams || message === sameTeamsSelected) return 2;
   if (message === searchForPlayers) return 3;
