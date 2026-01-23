@@ -17,7 +17,7 @@ type PlayerContextType = {
   player: Player;
   newPlayer: boolean;
   setUsername: (username: string) => void;
-  createGamePlayer: (username: string) => void;
+  createGamePlayer: (username: string) => Player;
   clearPlayer: () => void;
 };
 
@@ -77,6 +77,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     setPlayer(updatedPlayer);
     setNewPlayer(false);
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPlayer));
+    return updatedPlayer;
   };
 
   /** Optional utility */

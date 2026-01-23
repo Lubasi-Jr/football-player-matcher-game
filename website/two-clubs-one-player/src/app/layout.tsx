@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { EB_Garamond, Montserrat } from "next/font/google";
 import { PlayerProvider } from "@/context/PlayerProvider";
-import { GameProvider } from "@/context/GameContext";
+import { WebSocketProvider } from "@/context/WebSocketContext";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import BackgroundImage from "@/features/home/components/BackgroundImage";
+import { GameProvider } from "@/context/GameContext";
 import "./globals.css";
 
 const garamond = EB_Garamond({
@@ -33,9 +34,11 @@ export default function RootLayout({
       <body className={`${montserrat.variable} ${garamond.variable} font-sans`}>
         <ReactQueryProvider>
           <GameProvider>
-            <PlayerProvider>
-              <BackgroundImage>{children}</BackgroundImage>
-            </PlayerProvider>
+            <WebSocketProvider>
+              <PlayerProvider>
+                <BackgroundImage>{children}</BackgroundImage>
+              </PlayerProvider>
+            </WebSocketProvider>
           </GameProvider>
         </ReactQueryProvider>
       </body>

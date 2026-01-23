@@ -2,6 +2,7 @@ import { Player } from "@/context/PlayerProvider";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import joinGame from "../services";
+import { useGame } from "@/context/GameContext";
 
 export type mutationInput = {
   gameId: string;
@@ -10,6 +11,7 @@ export type mutationInput = {
 
 export function useJoinGame() {
   const router = useRouter();
+  const { updateGame } = useGame();
 
   return useMutation({
     mutationFn: async (input: mutationInput) => {
@@ -18,6 +20,7 @@ export function useJoinGame() {
       return data as any;
     },
     onSuccess: (data) => {
+      updateGame(data);
       router.push(`/game/${data?.gameId}`);
     },
   });

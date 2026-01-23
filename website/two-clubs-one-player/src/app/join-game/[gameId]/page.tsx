@@ -5,13 +5,13 @@ import { usePlayer } from "@/context/PlayerProvider";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useGame } from "@/context/GameContext";
+import { useWebSocket } from "@/context/WebSocketContext";
 import { mutationInput } from "@/features/join-game/hooks";
 import { useJoinGame } from "@/features/join-game/hooks";
 
 function JoinGame() {
   const { createGamePlayer, player } = usePlayer();
-  const { initializeConnection } = useGame();
+  const { initializeConnection } = useWebSocket();
   const params = useParams<{ gameId: string }>();
   const usernameRef = useRef<HTMLInputElement>(null);
   const mutation = useJoinGame();

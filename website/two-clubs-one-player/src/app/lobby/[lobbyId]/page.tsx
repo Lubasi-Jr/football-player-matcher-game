@@ -1,12 +1,14 @@
 "use client";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { useGame } from "@/context/GameContext";
+import { useWebSocket } from "@/context/WebSocketContext";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useGame } from "@/context/GameContext";
 
 function LobbyPage() {
-  const { initializeConnection, game } = useGame();
+  const { initializeConnection } = useWebSocket();
+  const { game } = useGame();
   const params = useParams<{ lobbyId: string }>();
   const router = useRouter();
 

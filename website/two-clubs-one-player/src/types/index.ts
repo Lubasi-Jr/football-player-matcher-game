@@ -50,3 +50,30 @@ type Footballer = {
   teamName: string;
   league: string;
 };
+
+export function gameToString(game: Game): string {
+  return `
+Game {
+  gameId: "${game.gameId}"
+  status: "${game.status}"
+  broadcastingMessage: "${game.broadcastingMessage}"
+
+  player1: ${playerToString(game.player1)}
+  player2: ${playerToString(game.player2)}
+  winner: ${playerToString(game.winner)}
+
+  footballerSelections: ${game.footballerSelection.length}
+  teamSelections: ${game.teamSelections.length}
+  showClubs: ${game.showClubs}
+}
+`.trim();
+}
+
+function playerToString(player: Player | null | undefined): string {
+  if (!player) return "null";
+
+  const username = player.username ?? "null";
+  const playerId = player.playerId ?? "null";
+
+  return `{ username: "${username}", playerId: "${playerId}" }`;
+}

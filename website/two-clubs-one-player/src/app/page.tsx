@@ -4,6 +4,7 @@ import { useCreateGame } from "@/features/home/hooks";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ReactHTMLElement, useRef } from "react";
+import { Player } from "@/context/PlayerProvider";
 
 export default function Home() {
   const router = useRouter();
@@ -15,9 +16,9 @@ export default function Home() {
     // Check if username is set
     if (!usernameRef.current?.value) return;
     // Create New Game Player
-    createGamePlayer(usernameRef.current.value);
+    const player1: Player = createGamePlayer(usernameRef.current.value);
     // Route to the lobby- can only route once we have received a game object
-    mutation.mutate(player);
+    mutation.mutate(player1);
   };
   return (
     <div className="relative z-10 min-h-screen w-full">

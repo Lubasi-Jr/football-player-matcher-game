@@ -1,14 +1,14 @@
 "use client";
 import { useParams } from "next/navigation";
-import React from "react";
-import { usePlayer } from "@/context/PlayerProvider";
-import { useRef } from "react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+
 import { useGame } from "@/context/GameContext";
+import { useWebSocket } from "@/context/WebSocketContext";
 
 function GameRoom() {
   const { game } = useGame();
+  const { sendAction } = useWebSocket();
+
   if (!game)
     return (
       <>
@@ -30,8 +30,9 @@ function GameRoom() {
         <div className="flex flex-col items-center justify-center w-full md:w-3/4 md:px-12 text-center space-y-5 md:space-y-7">
           <h1 className="text-4xl font-bold text-white">2 Clubs 1 Player</h1>
           <p className="text-white">Game has started !!!</p>
-          <p className="text-white">{`Player 1 is: ${game.player1.username}`}</p>
-          <p className="text-white">{`Player 2 is: ${game.player2.username}`}</p>
+          <p className="text-white">{`Broadcasting message is: ${game?.broadcastingMessage}`}</p>
+          <p className="text-white">{`Player 1 is: ${game?.player1.username}`}</p>
+          <p className="text-white">{`Player 2 is: ${game?.player2.username}`}</p>
         </div>
       </section>
     </div>
