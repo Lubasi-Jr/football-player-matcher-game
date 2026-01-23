@@ -58,6 +58,12 @@ export const WebSocketProvider = ({
           updateGame(updatedGame);
         }
       });
+
+      // Tell Spring Boot: "I just refreshed/joined, send me the full Game object"
+      client.publish({
+        destination: `/app/game/${gameId}/sync`,
+        body: JSON.stringify({}),
+      });
     };
 
     client.onStompError = (frame) => {

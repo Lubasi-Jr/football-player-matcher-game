@@ -48,6 +48,12 @@ public class GameService {
         return newGame;
     }
 
+    public Game syncGameWithPlayer(String gameId) throws GameNotFoundException{
+        boolean gameExists = gameStorage.getGames().containsKey(gameId);
+        if(!gameExists) throw new GameNotFoundException("Sorry, unfortunately this game does not exist");
+        return gameStorage.getGames().get(gameId);
+    }
+
     public Game joinGame(Player player2, String gameID) throws InvalidGameException, GameNotFoundException {
         // Retrieve the game from storage
         boolean gameExists = gameStorage.getGames().containsKey(gameID);

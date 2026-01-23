@@ -28,6 +28,7 @@ export default function Home() {
   // EARLY RETURNS- N/A
 
   // RENDER LOGIC e.g disabled buttons
+  const isLoading = mutation.isPending;
   const buttonName = mutation.isPending ? (
     <ClipLoader
       color="#000000"
@@ -59,7 +60,7 @@ export default function Home() {
           <button
             disabled={mutation.isPending}
             onClick={handleCreateGame}
-            className="font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer min-w-[140]"
+            className={`font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer min-w-[140] ${isLoading && "cursor-not-allowed"}`}
           >
             {buttonName}
           </button>

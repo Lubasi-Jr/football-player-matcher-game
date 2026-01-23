@@ -14,7 +14,6 @@ export function useCreateGame() {
       return data as any;
     },
     onSuccess: (data) => {
-      updateGame(data);
       router.push(`/lobby/${data?.gameId}`);
     },
   });

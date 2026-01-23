@@ -77,7 +77,7 @@ function JoinGame() {
           />
           <button
             onClick={handleJoinGame}
-            className="font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer"
+            className={`font-medium bg-white border-2 rounded-md text-center px-2 py-2 cursor-pointer min-w-[140] ${isLoading && "cursor-not-allowed"}`}
           >
             {buttonName}
           </button>

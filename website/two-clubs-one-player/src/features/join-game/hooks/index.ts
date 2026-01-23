@@ -20,7 +20,6 @@ export function useJoinGame() {
       return data as any;
     },
     onSuccess: (data) => {
-      updateGame(data);
       router.push(`/game/${data?.gameId}`);
     },
   });

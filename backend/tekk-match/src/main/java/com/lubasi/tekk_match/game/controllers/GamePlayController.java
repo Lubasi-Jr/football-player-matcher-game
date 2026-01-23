@@ -1,9 +1,11 @@
 package com.lubasi.tekk_match.game.controllers;
 
 import com.lubasi.tekk_match.game.Game;
+import com.lubasi.tekk_match.game.exceptions.GameNotFoundException;
 import com.lubasi.tekk_match.game.services.GameService;
 import com.lubasi.tekk_match.payloads.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -56,6 +58,15 @@ public class GamePlayController {
     public void replayGame(@Payload ReplayPayload payload){
         Game updatedGame = gameService.replayRequest(payload.getGameId(), payload.getPlayer());
         broadcastGameUpdate(updatedGame);
+    }
+
+    @MessageMapping("/game/{gameId}/sync")
+    public void handleSync(@DestinationVariable String gameId) throws GameNotFoundException {
+        // Fetch the game state from your service/database
+        Game currentGame = gameService.syncGameWithPlayer(gameId);
+
+        // Broadcast it back to the specific game room topic
+        broadcastGameUpdate(currentGame);
     }
 
     /**
