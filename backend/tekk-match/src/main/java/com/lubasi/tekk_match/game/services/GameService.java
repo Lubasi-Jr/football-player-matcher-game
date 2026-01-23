@@ -203,6 +203,7 @@ public class GameService {
         game.setFootballerSelection(new ArrayList<>());
         game.setWinner(null);
         game.setShowClubs(false);
+        game.setBroadcastingMessage("Please select the teams you wish to use");
         return game;
     }
 
