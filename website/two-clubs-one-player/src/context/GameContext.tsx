@@ -1,6 +1,6 @@
 "use client";
 import { useContext, createContext, ReactNode, useState } from "react";
-import { Game, gameToString } from "@/types";
+import { gameToString, Game } from "../types";
 
 interface GameContextType {
   game: Game | null;
