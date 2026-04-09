@@ -5,7 +5,7 @@ import { WebSocketProvider } from "@/context/WebSocketContext";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import BackgroundImage from "@/features/home/components/BackgroundImage";
 import { GameProvider } from "@/context/GameContext";
-import "./globals.css";
+import "@/app/globals.css";
 
 const garamond = EB_Garamond({
   subsets: ["latin"],

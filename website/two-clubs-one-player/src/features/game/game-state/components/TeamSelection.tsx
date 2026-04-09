@@ -1,10 +1,31 @@
 import { useGame } from '@/context/GameContext'
+import { usePlayer } from '@/context/PlayerProvider'
 import React from 'react'
+import { Player } from '@/context/PlayerProvider'
 import { useWebSocket } from '@/context/WebSocketContext'
+import { useState } from 'react'
+
+type TeamSelectionPayload  = {
+  gameId: string,
+  teamId: number,
+  player: Player,
+}
 
 function TeamSelection() {
-  const {game, gameId} = useGame()
+  const {game, gameId} = useGame();
+  const {player} = usePlayer();
   const { sendAction } = useWebSocket();
+  const [isDisabled, setIsDisabled] = useState<boolean>(false) // Flag to avoid duplicate button clicks
+  const [selectedTeam, setSelectedTeam] = useState<number>(null)
+
+  const handleTeamSelect = (teamId: string)=>{
+    /* We only need teamId from the Team Card because gameId is from useGame, Player object is from usePlayer */
+    // Make sure disabled is on - affects all buttons
+    // Update the UI for the selected team
+    // Draft the payload
+
+    // Send the action - just wait for it to automatically re-render the message
+  }
   return (
    <div className="relative z-10 min-h-screen w-full">
       <section className="w-full h-screen px-6 flex items-center justify-center">
@@ -20,3 +41,5 @@ function TeamSelection() {
 }
 
 export default TeamSelection
+
+/* Re-usable Team Card component */

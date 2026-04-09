@@ -31,4 +31,30 @@ export const getGameStateNumber = (message: string): number => {
   return 1; // Default fallback
 };
 
+export const FootballTeamCards = [{
+  name: "Arsenal",
+  src: "/teams/arsenal.png",
+  teamId: 1,
+},{
+  name: "Chelsea",
+  src: "/teams/chelsea.png",
+  teamId: 2
+},{
+  name: "Liverpool",
+  src: "/teams/liverpool.png",
+  teamId: 2
+},{
+  name: "Manchester City",
+  src: "/teams/man-city.png",
+  teamId: 2
+},{
+  name: "Manchester United",
+  src: "/teams/man-united.png",
+  teamId: 2
+},{
+  name: "Tottenham Hotspur",
+  src: "/teams/tottenham.png",
+  teamId: 2
+}]
+
 
