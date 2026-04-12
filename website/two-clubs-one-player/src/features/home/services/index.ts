@@ -7,7 +7,7 @@ interface ApiError {
 
 interface ApiSuccess {
   data: null;
-  error: any;
+  error: any; 
 }
 
 type ApiResponse = ApiError | ApiSuccess;

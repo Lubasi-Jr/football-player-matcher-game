@@ -7,6 +7,7 @@ import BackgroundImage from "@/features/home/components/BackgroundImage";
 import { GameProvider } from "@/context/GameContext";
 import "@/app/globals.css";
 
+
 const garamond = EB_Garamond({
   subsets: ["latin"],
   variable: "--font-serif",

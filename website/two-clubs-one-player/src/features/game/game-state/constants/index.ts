@@ -2,7 +2,7 @@ import TeamSelection from "../components/TeamSelection";
 
 // Constants
 const selectTeams = "Please select the teams you wish to use";
-const sameTeamsSelected =
+export const sameTeamsSelected =
   "The teams selected are the same, please re-pick your teams once more";
 const searchForPlayers =
   "The teams to match up are shown below. Quickly search for a valid footballer!!";
