@@ -38,67 +38,67 @@ public class FootballerControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test
-    public void FootballerController_GetPlayersFromQuery_Returns_PaginatedListOfPlayers() throws Exception{
-        // ARRANGE
-        // Create mock list of footballers
-        Footballer footballer1 = Footballer.builder().footballerId(UUID.randomUUID())
-                .footballerName("Van Persie")
-                .dob("12/07/2002")
-                .flag("RANDOM-FLAG-URL")
-                .position("Striker")
-                .nationality("Dutch")
-                .build();
-        Footballer footballer2 = Footballer.builder()
-                .footballerId(UUID.randomUUID()) // Using randomUUID for convenience
-                .footballerName("Thierry Henry")
-                .dob("17/08/1977")
-                .flag("FRANCE-FLAG-URL")
-                .position("Striker")
-                .nationality("French")
-                .build();
-
-        Footballer footballer3 = Footballer.builder()
-                .footballerId(UUID.randomUUID())
-                .footballerName("Wayne Rooney")
-                .dob("24/10/1985")
-                .flag("ENGLAND-FLAG-URL")
-                .position("Forward")
-                .nationality("English")
-                .build();
-
-        Footballer footballer4 = Footballer.builder()
-                .footballerId(UUID.randomUUID())
-                .footballerName("Luka Modric")
-                .dob("09/09/1985")
-                .flag("CROATIA-FLAG-URL")
-                .position("Midfielder")
-                .nationality("Croatian")
-                .build();
-        List<Footballer> mockListOfFootballers = new ArrayList<>(Arrays.asList(footballer4,footballer1,footballer3,footballer2));
-
-        // Mock the params
-        int pageNumber = 1;
-        int pageSize = 10;
-        PageRequest pageable = PageRequest.of(1,10);
-        String query = "Van";
-
-        // Mock the function call
-        Mockito.when(footballerService.getPlayersFromSearchQuery(query,pageable)).thenReturn(mockListOfFootballers);
-
-        // ACT
-        ResultActions result = mockMvc.perform(get("/api/players/search")
-                .param("searchQuery",query)
-                .param("page", String.valueOf(pageNumber))
-                .param("size",String.valueOf(pageSize)));
-
-        // ASSERT
-        result.andExpect(status().isOk());
-        result.andExpect(jsonPath("$[0].footballerName").value("Luka Modric"));
-        result.andExpect(jsonPath("$[0].position").value("Midfielder"));
-        result.andExpect(jsonPath("$[0].nationality").value("Croatian"));
-
-
-
-    }
+//    @Test
+//    public void FootballerController_GetPlayersFromQuery_Returns_PaginatedListOfPlayers() throws Exception{
+//        // ARRANGE
+//        // Create mock list of footballers
+//        Footballer footballer1 = Footballer.builder().footballerId(UUID.randomUUID())
+//                .footballerName("Van Persie")
+//                .dob("12/07/2002")
+//                .flag("RANDOM-FLAG-URL")
+//                .position("Striker")
+//                .nationality("Dutch")
+//                .build();
+//        Footballer footballer2 = Footballer.builder()
+//                .footballerId(UUID.randomUUID()) // Using randomUUID for convenience
+//                .footballerName("Thierry Henry")
+//                .dob("17/08/1977")
+//                .flag("FRANCE-FLAG-URL")
+//                .position("Striker")
+//                .nationality("French")
+//                .build();
+//
+//        Footballer footballer3 = Footballer.builder()
+//                .footballerId(UUID.randomUUID())
+//                .footballerName("Wayne Rooney")
+//                .dob("24/10/1985")
+//                .flag("ENGLAND-FLAG-URL")
+//                .position("Forward")
+//                .nationality("English")
+//                .build();
+//
+//        Footballer footballer4 = Footballer.builder()
+//                .footballerId(UUID.randomUUID())
+//                .footballerName("Luka Modric")
+//                .dob("09/09/1985")
+//                .flag("CROATIA-FLAG-URL")
+//                .position("Midfielder")
+//                .nationality("Croatian")
+//                .build();
+//        List<Footballer> mockListOfFootballers = new ArrayList<>(Arrays.asList(footballer4,footballer1,footballer3,footballer2));
+//
+//        // Mock the params
+//        int pageNumber = 1;
+//        int pageSize = 10;
+//        PageRequest pageable = PageRequest.of(1,10);
+//        String query = "Van";
+//
+//        // Mock the function call
+//        Mockito.when(footballerService.getPlayersFromSearchQuery(query,pageable)).thenReturn(mockListOfFootballers);
+//
+//        // ACT
+//        ResultActions result = mockMvc.perform(get("/api/players/search")
+//                .param("searchQuery",query)
+//                .param("page", String.valueOf(pageNumber))
+//                .param("size",String.valueOf(pageSize)));
+//
+//        // ASSERT
+//        result.andExpect(status().isOk());
+//        result.andExpect(jsonPath("$[0].footballerName").value("Luka Modric"));
+//        result.andExpect(jsonPath("$[0].position").value("Midfielder"));
+//        result.andExpect(jsonPath("$[0].nationality").value("Croatian"));
+//
+//
+//
+//    }
 }

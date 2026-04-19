@@ -15,3 +15,12 @@ export type PlayerSelectionPayload = {
     footballer: Footballer;
     player: Player;
 }
+
+export type PageResponse<T> = {
+    content: T[];
+    currentPage: number;
+    totalPages: number;
+    totalElements: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
+}

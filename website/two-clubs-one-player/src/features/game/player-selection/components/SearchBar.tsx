@@ -3,34 +3,62 @@ import { useSearchPlayers } from '../hooks/useSearchPlayers'
 import { useState, useEffect } from 'react'
 import { Footballer } from '../constants'
 import { PlayerSelectionPayload } from '../constants'
+import { useRef } from 'react'
 
 
 const SearchBar = () => {
-    const [searchQuery, setSearchQuery] = useState<string>("")
-    // draftSearch tracks every keystroke in real-time.
-    // searchQuery is the debounced version — only updated after the user stops typing.
-    // useSearchPlayers depends on searchQuery, not draftSearch, so API calls
-    // are only triggered once the user has paused rather than on every keystroke.
     const [draftSearch, setDraft] = useState<string>("")
-    const {data, isLoading} = useSearchPlayers(searchQuery, 0, 10)
-    
+    const [searchQuery, setSearchQuery] = useState<string>("")
+    const sentinelRef = useRef<HTMLDivElement>(null)
 
-    useEffect(()=>{
-        // Debounced search - useSearchPlayers is dependant on the searchQuery NOT draftSearch 
-        const timer = setTimeout(()=>{
-            setSearchQuery(draftSearch)
-        },500)
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        isLoading
+    } = useSearchPlayers(searchQuery, 10)
 
-        return ()=> clearTimeout(timer)
+    const footballers = data?.pages.flatMap(page => page.content) ?? []
 
-    },[draftSearch]) // Draft search gets updated with every keystroke - setDraft((e.target.value))
-  return (
-    <div>
-      <p>
-        
-      </p>
-    </div>
-  )
+    // Debounce
+    useEffect(() => {
+        const timer = setTimeout(() => setSearchQuery(draftSearch), 400)
+        return () => clearTimeout(timer)
+    }, [draftSearch])
+
+    // Intersection Observer
+    useEffect(() => {
+        const sentinel = sentinelRef.current
+        if (!sentinel) return
+
+        const observer = new IntersectionObserver((entries) => {
+            const first = entries[0]
+            if (first.isIntersecting && hasNextPage && !isFetchingNextPage) {
+                fetchNextPage()
+            }
+        })
+
+        observer.observe(sentinel)
+        return () => observer.disconnect()
+
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
+    return (
+        <div>
+            <input
+                value={draftSearch}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="Search players..."
+            />
+            {isLoading && <p>Searching...</p>}
+            {footballers.map(f => (
+                <div key={f.footballerId}>{f.footballerName}</div>
+            ))}
+            <div ref={sentinelRef} style={{ height: "1px" }} />
+            {isFetchingNextPage && <p>Loading more...</p>}
+        </div>
+    )
 }
 
 export default SearchBar
