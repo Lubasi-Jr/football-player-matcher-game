@@ -28,7 +28,7 @@ function PlayerSearch() {
       sendAction(DESTINATION,payload)
  }
    return (
-    <div id='outer-shell' className="relative z-10 min-h-screen w-full flex flex-col justify-start items-center px-4 py-10">
+    <div id='outer-shell' className="relative z-10 min-h-screen w-full flex flex-col justify-start items-center px-4 py-10 gap-4">
        {/* Header */}
        <section className="w-full max-w-2xl text-center mb-10 space-y-3">
           <h1 className="text-4xl font-bold text-white drop-shadow-md">2 Clubs 1 Player</h1>
@@ -48,7 +48,7 @@ function PlayerSearch() {
                         mx-auto w-full max-w-50 py-5 px-3
                         flex flex-col items-center justify-center gap-3
                       bg-white rounded-2xl shadow-lg
-                        transition-transform hover:scale-105
+                       
                         `}
                            >
                              {/* Logo */}

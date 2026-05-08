@@ -90,14 +90,15 @@ const SearchBar = ({selectPlayer}: SearchBarProps) => {
 
     return (
         <>
+            <div className='h-auto w-auto flex flex-col gap-0'>
             <input
                 value={draftSearch}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Search for players..."
-                className='w-full py-2 px-2 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-black/55 border-2 border-white'
+                className='w-full py-2 px-2 rounded-t-md bg-white focus:outline-none focus:ring-0 focus:ring-black/55 border-2 border-white'
             />
             <div id='player-selectors-container'
-                className='w-full bg-white max-h-72 overflow-y-scroll border-0 rounded-b-md no-scrollbar'
+                className='w-full bg-white max-h-72 overflow-y-scroll border-2 border-black border-t border-l border-r rounded-b-md no-scrollbar'
             >
                 {
                     isLoading ? <p className='mx-auto'>Searching...</p> : <>
@@ -117,7 +118,8 @@ const SearchBar = ({selectPlayer}: SearchBarProps) => {
                                             aria-label="Loading Spinner"
                                             data-testid="loader"
                                         /></div>}
-            </div>    
+            </div> 
+            </div>   
         </>
     )
 }
