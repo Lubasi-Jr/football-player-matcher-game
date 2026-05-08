@@ -36,7 +36,7 @@ type TeamSelection = {
   teamSelected: FootballTeam;
 };
 
-type FootballTeam = {
+ type Footballer = {
   footballerId: UUID;
   footballerName: string;
   position: string;
@@ -45,7 +45,7 @@ type FootballTeam = {
   dob: string;
 };
 
-type Footballer = {
+export type FootballTeam = {
   footballTeamId: any;
   teamName: string;
   league: string;

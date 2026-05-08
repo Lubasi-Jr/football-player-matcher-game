@@ -5,6 +5,9 @@ import { Footballer } from '../constants'
 import { PlayerSelectionPayload } from '../constants'
 import { useRef } from 'react'
 import Image from 'next/image'
+import { ClipLoader } from 'react-spinners'
+import { useGame } from '@/context/GameContext'
+import { usePlayer } from '@/context/PlayerProvider'
 
 type Position = 'Goalkeeper' | 'Defender' | 'Midfielder' | 'Forward'
 const PositionMapper: Record<Position,string> = {
@@ -16,10 +19,22 @@ const PositionMapper: Record<Position,string> = {
 
 /* Player card component */
 type PlayerSelectorProps = {
-    baller: Footballer
+    baller: Footballer,
+    selectPlayer?: (payload: PlayerSelectionPayload) => void
 }
-export const PlayerSelector = ({baller}: PlayerSelectorProps)=>{
-    return <div className='w-full 
+export const PlayerSelector = ({baller, selectPlayer}: PlayerSelectorProps)=>{
+    // Create the payload for each bar
+    const {gameId} = useGame()
+    const {player} = usePlayer()
+    const payload: PlayerSelectionPayload = {
+        gameId: gameId,
+        player: player,
+        footballer: baller
+    }
+
+    return <div 
+    onClick={()=> selectPlayer(payload)}
+    className='w-full 
     h-12 py-1.5 
     border-0 gap-4 flex items-center px-1 rounded-md bg-white text-black 
     hover:bg-black hover:text-white transition-colours hover:cursor-pointer'>
@@ -31,8 +46,11 @@ export const PlayerSelector = ({baller}: PlayerSelectorProps)=>{
     </div>
 }
 
+type SearchBarProps = {
+    selectPlayer: (payload: PlayerSelectionPayload)=> void
+}
 
-const SearchBar = () => {
+const SearchBar = ({selectPlayer}: SearchBarProps) => {
     const [draftSearch, setDraft] = useState<string>("")
     const [searchQuery, setSearchQuery] = useState<string>("")
     const sentinelRef = useRef<HTMLDivElement>(null)
@@ -85,14 +103,20 @@ const SearchBar = () => {
                     isLoading ? <p className='mx-auto'>Searching...</p> : <>
                     {footballers.map((baller, index) =>(
                         <>
-                        <PlayerSelector key={baller.footballerId} baller={baller}/>
+                        <PlayerSelector key={baller.footballerId} baller={baller} selectPlayer={selectPlayer}/>
                         
                         </>
                     ))}
                     </>
                 }
                 <div  ref={sentinelRef} className="h-0 w-full opacity-0 pointer-events-none" />
-                {isFetchingNextPage && <p>Loading more...</p>}
+                {isFetchingNextPage && <div className='mx-auto'><ClipLoader
+                                            color="#000000"
+                                            loading={true}
+                                            size={10}
+                                            aria-label="Loading Spinner"
+                                            data-testid="loader"
+                                        /></div>}
             </div>    
         </>
     )
