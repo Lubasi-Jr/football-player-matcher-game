@@ -199,7 +199,7 @@ public class GameService {
 
         if(replay.getReplayRequests().size() == 1){
             // Duplicate request OR The player is the first player to request
-            String message = playerRequesting.getUsername() + " requested to play the next round";
+            String message = playerRequesting.getUsername() + " requested to play the another game";
             game.setBroadcastingMessage(message);
             return game; // Update the broadcasting message with "Waiting for all players to request next round"
         }
