@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
 import { usePlayer, Player } from '@/context/PlayerProvider'
@@ -9,12 +9,15 @@ type ReplayPayload = { gameId: string; player: Player }
 type LeavePayload  = { gameId: string }
 
 function GameDown() {
-  const { game, gameId } = useGame()
+  const { game, gameId, clearGame } = useGame()
   const { player } = usePlayer()
   const { sendAction } = useWebSocket()
   const router = useRouter()
+  const [replayRequested, setReplayRequested] = useState(false)
 
   const handleReplay = () => {
+    if (replayRequested) return
+    setReplayRequested(true)
     const payload: ReplayPayload = { gameId, player }
     sendAction("replay", payload)
   }
@@ -22,6 +25,7 @@ function GameDown() {
   const handleBack = () => {
     const payload: LeavePayload = { gameId }
     sendAction("leave", payload)
+    clearGame()
     router.push("/")
   }
 
@@ -34,12 +38,16 @@ function GameDown() {
           <p className="text-white">{`Player 1 is: ${game?.player1.username}`}</p>
           <p className="text-white">{`Player 2 is: ${game?.player2.username}`}</p>
           <div className="flex gap-4 pt-2">
-            <button
-              onClick={handleReplay}
-              className="text-white bg-[#80461b] text-sm px-6 py-2 rounded-md cursor-pointer hover:bg-[#6b3a15] transition-colors"
-            >
-              Replay
-            </button>
+            {replayRequested ? (
+              <p className="text-white/60 text-sm">Waiting for opponent...</p>
+            ) : (
+              <button
+                onClick={handleReplay}
+                className="text-white bg-[#80461b] text-sm px-6 py-2 rounded-md cursor-pointer hover:bg-[#6b3a15] transition-colors"
+              >
+                Replay
+              </button>
+            )}
             <button
               onClick={handleBack}
               className="text-white border border-white text-sm px-6 py-2 rounded-md cursor-pointer hover:bg-white/10 transition-colors"

@@ -7,13 +7,14 @@ import { useWebSocket } from '@/context/WebSocketContext'
 type LeavePayload = { gameId: string }
 
 function GameAbandoned() {
-  const { game, gameId } = useGame()
+  const { game, gameId, clearGame } = useGame()
   const { sendAction } = useWebSocket()
   const router = useRouter()
 
   const handleBack = () => {
     const payload: LeavePayload = { gameId }
     sendAction("leave", payload)
+    clearGame()
     router.push("/")
   }
 
