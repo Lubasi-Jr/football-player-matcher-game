@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useWebSocket } from "@/context/WebSocketContext";
+import { useLeaveGuard } from "@/hooks/useLeaveGuard";
 import { mutationInput } from "@/features/join-game/hooks";
 import { useJoinGame } from "@/features/join-game/hooks";
 import { ClipLoader } from "react-spinners";
@@ -17,6 +18,7 @@ function JoinGame() {
   const mutation = useJoinGame();
 
   const params = useParams<{ gameId: string }>();
+  useLeaveGuard(params.gameId);
   const usernameRef = useRef<HTMLInputElement>(null);
 
   // EFFECTS

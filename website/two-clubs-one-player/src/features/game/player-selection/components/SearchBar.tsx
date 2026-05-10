@@ -103,10 +103,10 @@ const SearchBar = ({selectPlayer}: SearchBarProps) => {
                 {
                     isLoading ? <p className='mx-auto'>Searching...</p> : <>
                     {footballers.map((baller, index) =>(
-                        <>
+                       
                         <PlayerSelector key={baller.footballerId} baller={baller} selectPlayer={selectPlayer}/>
                         
-                        </>
+                        
                     ))}
                     </>
                 }

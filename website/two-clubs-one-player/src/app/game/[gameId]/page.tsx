@@ -10,6 +10,7 @@ import GameDown from "@/features/game/game-state/components/GameDown";
 import GameAbandoned from "@/features/game/game-state/components/GameAbandoned";
 import DefaultFallback from "@/features/game/game-state/components/DefaultFallback";
 import { getGameStateNumber } from "@/features/game/game-state/constants";
+import { useLeaveGuard } from "@/hooks/useLeaveGuard";
 
 const GAME_STATE: Record<number, React.ReactNode> = {
   2: <TeamSelection/>,
@@ -24,7 +25,8 @@ function GameRoom() {
   const { game, gameId } = useGame();
   const { sendAction, initializeConnection, isConnected } = useWebSocket();
   const params = useParams<{ gameId: string }>();
-  
+  useLeaveGuard(params.gameId);
+
 
   // EFFECTS
   /* Controls the window refresh. Refreshing the window loses connection therefore we need to reconnect and sync the game again */

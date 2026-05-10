@@ -1,7 +1,7 @@
 "use client"
 import { useGame } from '@/context/GameContext'
 import { usePlayer } from '@/context/PlayerProvider'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Player } from '@/context/PlayerProvider'
 import { useWebSocket } from '@/context/WebSocketContext'
 import { FootballTeamSelectionCards as cards } from '../constants'
@@ -23,17 +23,20 @@ function TeamSelection() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
   const [selectedTeam, setSelectedTeam] = useState<number | null>(null)
 
+  useEffect(()=>{
+    if(game?.broadcastingMessage === sameTeamsSelected) {
+      setIsDisabled(false);
+      setSelectedTeam(null)
+    }
+
+  },[game?.broadcastingMessage])
+
   const handleTeamSelect = (teamId: string) => {
     setIsDisabled(true)
     setSelectedTeam(Number(teamId))
     const payload: TeamSelectionPayload = { gameId, teamId: Number(teamId), player };
     sendAction(DESTINATION, payload)
     setIsDisabled(false)
-    
-    if(game?.broadcastingMessage === sameTeamsSelected) {
-      setIsDisabled(false);
-      setSelectedTeam(null)
-    }
   }
 
   return (

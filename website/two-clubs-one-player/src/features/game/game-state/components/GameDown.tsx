@@ -35,10 +35,8 @@ function GameDown() {
         <div className="flex flex-col items-center justify-center w-full md:w-3/4 md:px-12 text-center space-y-5 md:space-y-7">
           <h1 className="text-4xl font-bold text-white">2 Clubs 1 Player</h1>
           <p className="text-white">{`${game?.broadcastingMessage}`}</p>
-          <p className="text-white">{`Player 1 is: ${game?.player1.username}`}</p>
-          <p className="text-white">{`Player 2 is: ${game?.player2.username}`}</p>
           <div className="flex gap-4 pt-2">
-            {replayRequested ? (
+            {/* {replayRequested ? (
               <p className="text-white/60 text-sm">Waiting for opponent...</p>
             ) : (
               <button
@@ -47,7 +45,7 @@ function GameDown() {
               >
                 Replay
               </button>
-            )}
+            )} */}
             <button
               onClick={handleBack}
               className="text-white border border-white text-sm px-6 py-2 rounded-md cursor-pointer hover:bg-white/10 transition-colors"
