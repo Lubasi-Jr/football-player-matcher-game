@@ -36,7 +36,8 @@ export const WebSocketProvider = ({
     if (stompClient.current?.connected) return;
 
     // Use SockJS if your Spring backend has .withSockJS() enabled
-    const socket = new SockJS("http://localhost:8080/tekk");
+    const SOCKET_URL = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:8080/tekk';
+    const socket = new SockJS(SOCKET_URL);
 
     const client = new Client({
       webSocketFactory: () => socket,

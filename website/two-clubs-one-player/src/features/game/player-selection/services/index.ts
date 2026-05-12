@@ -4,14 +4,14 @@ import { Footballer, PageResponse } from "../constants";
         This service function is used to search for players from the Spring boot Backend
 
  */
-
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 const ENDPOINT = "/api/players/search";
 
 
 export async function searchForPlayers(query: string, page: number, size: number) {
     try {
         const response = await fetch(
-            `http://localhost:8080${ENDPOINT}?searchQuery=${query}&page=${page}&size=${size}`,
+            `${BASE_URL}${ENDPOINT}?searchQuery=${query}&page=${page}&size=${size}`,
             { method: "GET", headers: { "Content-Type": "application/json" } }
         )
         if (!response.ok) {

@@ -21,7 +21,7 @@ export const getGameStateNumber = (message: string): number => {
   }
 
   if (
-    message.includes("won this round. Their footballer selection was ") ||
+    message.includes("won!!🥇 Their footballer selection was ") ||
     message.includes("requested to play the next round")
   )
     return 4; // Aftermatch of game component (Replay feature)

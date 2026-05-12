@@ -186,7 +186,7 @@ public class GameService {
         // Update the broadcasting message
         String playerUsername = player.getUsername();
         String ballerName = baller.getFootballerName();
-        String message = playerUsername+" "+"won this round. Their footballer selection was "+ballerName;
+        String message = playerUsername+" "+"won!!\uD83E\uDD47 Their footballer selection was "+ballerName;
         game.setBroadcastingMessage(message);
         gameStorage.addGame(game);
         return game;

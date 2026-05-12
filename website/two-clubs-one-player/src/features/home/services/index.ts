@@ -13,7 +13,8 @@ interface ApiSuccess {
 type ApiResponse = ApiError | ApiSuccess;
 
 export async function creatGame(player1: Player): Promise<ApiResponse> {
-  const url = "http://localhost:8080/api/game/create";
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+  const url = `${BASE_URL}/api/game/create`;
   try {
     const response = await fetch(url, {
       method: "POST",

@@ -17,7 +17,8 @@ export default async function joinGame(
   player2: Player,
 ): Promise<ApiResponse> {
   try {
-    const url = `http://localhost:8080/api/game/join/${gameId}`;
+    const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+    const url = `${BASE_URL}/api/game/join/${gameId}`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
